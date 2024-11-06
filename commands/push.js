@@ -31,51 +31,6 @@ module.exports = {
         const imgUrl = interaction.options.getString('img') || null;
 
         try {
-            if (interaction.deferred) {
-                await interaction.editReply({
-                    content: `${interaction.user}, your commit has been successfully made!`,
-                    embeds: [
-                        new EmbedBuilder()
-                            .setAuthor({
-                                name: interaction.user.username,
-                                iconURL: interaction.user.displayAvatarURL(),
-                            })
-                            .setTitle(title)
-                            .setDescription(description)
-                            .setImage(imgUrl ? imgUrl : null)
-                            .setFooter({
-                                text: `Push by: ${interaction.user.tag}`,
-                            })
-                            .setColor('#3498db'),
-                    ],
-                });
-                return;
-            }
-
-            if (interaction.replied) {
-                await interaction.editReply({
-                    content: `${interaction.user}, your commit has been successfully made!`,
-                    embeds: [
-                        new EmbedBuilder()
-                            .setAuthor({
-                                name: interaction.user.username,
-                                iconURL: interaction.user.displayAvatarURL(),
-                            })
-                            .setTitle(title)
-                            .setDescription(description)
-                            .setImage(imgUrl ? imgUrl : null)
-                            .setFooter({
-                                text: `Push by: ${interaction.user.tag}`,
-                            })
-                            .setColor('#3498db'),
-                    ],
-                });
-            }
-
-            await interaction.reply(
-                `This command was run by ${interaction.user.username}, who joined on ${interaction.member.joinedAt}.`
-            );
-
             // Send preview to the configured commit channel
             const channel = interaction.client.channels.cache.get(
                 interaction.client.channelsConfig.commitChannel
@@ -97,6 +52,9 @@ module.exports = {
                             .setColor('#3498db'),
                     ],
                 });
+                await interaction.channel.send(
+                    `This command was run by ${interaction.user.username}, who joined on ${interaction.member.joinedAt}.`
+                );
             }
         } catch (error) {
             console.error('Error executing /push command:', error);
