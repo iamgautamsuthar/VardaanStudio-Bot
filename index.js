@@ -1,6 +1,6 @@
 const {
     Client,
-    Intents,
+    GatewayIntentBits,
     Collection,
     REST,
     Routes,
@@ -13,9 +13,14 @@ const path = require('path');
 // Load environment variables from .env file
 dotenv.config();
 
-// Initialize bot client
+// Initialize bot client with GatewayIntentBits
 const client = new Client({
-    intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
+    intents: [
+        GatewayIntentBits.Guilds, // To interact with guilds
+        GatewayIntentBits.GuildMessages, // To read messages
+        GatewayIntentBits.MessageContent, // To read message content (important for some commands)
+        GatewayIntentBits.GuildMembers, // To read members in guilds
+    ],
     partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
 });
 
@@ -67,6 +72,41 @@ const registerCommands = async () => {
 };
 
 registerCommands();
+
+// Listen for slash commands interactions
+client.on('interactionCreate', async (interaction) => {
+    if (!interaction.isCommand()) return;
+
+    const command = client.commands.get(interaction.commandName);
+
+    if (!command) return;
+
+    try {
+        await command.execute(interaction);
+    } catch (error) {
+        console.error(error);
+        await interaction.reply({
+            content: 'There was an error while executing this command!',
+            ephemeral: true,
+        });
+    }
+});
+
+// Ready event to set the bot status
+client.once('ready', () => {
+    console.log(`Logged in as ${client.user.tag}`);
+
+    // Set the bot's activity status to "Playing"
+    client.user.setPresence({
+        status: 'online', // Bot status (can be 'online', 'idle', 'dnd', or 'invisible')
+        activities: [
+            {
+                name: 'Vardaan Studio', // Activity name
+                type: ActivityType.Playing, // Activity type (Playing, Watching, Listening, etc.)
+            },
+        ],
+    });
+});
 
 // Login to Discord
 client.login(process.env.BOT_TOKEN);

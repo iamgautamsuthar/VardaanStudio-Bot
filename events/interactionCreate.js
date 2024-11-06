@@ -1,12 +1,18 @@
 module.exports = {
     name: 'interactionCreate',
-    execute(interaction) {
+    async execute(interaction, client) {
         if (!interaction.isCommand()) return;
 
+        // Check if the interaction is a slash command
         const { commandName } = interaction;
 
-        if (commandName === 'ping') {
-            interaction.reply('PONG');
+        // Handle the /push command
+        if (commandName === 'push') {
+            const command = client.commands.get('push');
+            if (command) {
+                await interaction.deferReply();
+                await command.execute(interaction);
+            }
         }
     },
 };
