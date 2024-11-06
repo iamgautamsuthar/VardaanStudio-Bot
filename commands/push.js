@@ -31,23 +31,6 @@ module.exports = {
         const imgUrl = interaction.options.getString('img') || null;
 
         try {
-            // await interaction.reply({
-            //     content: `${interaction.user}, your commit has been successfully made!`,
-            //     embeds: [
-            //         new EmbedBuilder()
-            //             .setAuthor({
-            //                 name: interaction.user.username,
-            //                 iconURL: interaction.user.displayAvatarURL(),
-            //             })
-            //             .setTitle(title)
-            //             .setDescription(description)
-            //             .setImage(imgUrl ? imgUrl : null)
-            //             .setFooter({ text: `Push by: ${interaction.user.tag}` })
-            //             .setColor('#3498db'),
-            //     ],
-            // });
-
-            // solve Error [InteractionAlreadyReplied]: The reply to this interaction has already been sent or deferred.
             if (interaction.deferred) {
                 await interaction.editReply({
                     content: `${interaction.user}, your commit has been successfully made!`,
