@@ -6,12 +6,19 @@ module.exports = {
         // Check if the interaction is a slash command
         const { commandName } = interaction;
 
-        // Handle the /push command
-        if (commandName === 'push') {
-            const command = client.commands.get('push');
-            if (command) {
+        // Get the command from client.commands collection
+        const command = client.commands.get(commandName);
+
+        // If the command exists, execute it
+        if (command) {
+            try {
                 await interaction.deferReply();
-                await command.execute(interaction);
+            } catch (error) {
+                console.error(`Error executing ${commandName} command:`, error);
+                await interaction.reply({
+                    content: 'There was an error executing this command.',
+                    ephemeral: true,
+                });
             }
         }
     },

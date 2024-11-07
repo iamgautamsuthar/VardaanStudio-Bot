@@ -52,8 +52,10 @@ module.exports = {
                             .setColor('#3498db'),
                     ],
                 });
-                await interaction.channel.send(
-                    `This command was run by ${interaction.user.username}, who joined on ${interaction.member.joinedAt}.`
+
+                // Send confirmation message in the command channel
+                const confirmationMessage = await interaction.channel.send(
+                    `${interaction.user} Pushed to commit channel: ${channel.name}`
                 );
             }
         } catch (error) {
