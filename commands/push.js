@@ -55,7 +55,7 @@ module.exports = {
 
                 // Send confirmation message in the command channel
                 const confirmationMessage = await interaction.channel.send(
-                    `This command was run by ${interaction.user.username}, who joined on ${interaction.member.joinedAt}.`
+                    `${interaction.user} Pushed to commit channel: ${channel.name}`
                 );
             }
         } catch (error) {
