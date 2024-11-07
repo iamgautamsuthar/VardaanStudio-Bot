@@ -11,7 +11,7 @@ module.exports = {
             const command = client.commands.get('push');
             if (command) {
                 await interaction.deferReply();
-                await command.execute(interaction);
+                // await command.execute(interaction);
             }
         }
     },
